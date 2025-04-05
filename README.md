@@ -56,7 +56,7 @@ It is intended for **educational and personal use only**
 
 ## Configuration
 
-- ** Scheduling **: Intended to be used with cron or another scheduler to run hourly.
+- **Scheduling**: Intended to be used with cron or another scheduler to run hourly.
 
 - **General Configuration**: ```config.py``` contains general scraping configuration. The default values will work for most cases. You **will need to set your discord webhook** for notifications.
 
