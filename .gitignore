@@ -1,0 +1,11 @@
+price_scraper.log
+newegg.html
+.dockerignore
+compose.yaml
+data.csv
+Dockerfile
+README.Docker.md
+.~lock.data.csv#
+__pycache__/
+last_scrape.pkl
+bestbuy.html
