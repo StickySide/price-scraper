@@ -63,8 +63,12 @@ It is intended for **educational and personal use only**
 - **Scraping Targets**: ```targets.py``` contains a list of targets the program will target. I've left some of my settings in as an example, but stripped the URL for legal reasons. Each field is commented for set up. Add as many targets as you like.
 
 - **Custom Code**: The ```Requester```, ```Parser```, and ```Scrape``` classes need some custom coding to scrape your desired website. You'll need some experience with scraping. I left my code in as an example.
+    - ```Requester.get_html(name: str, url: str, headers=config.HEADERS)``` method takes a URL and outputs raw html in string format. Included are two examples, one using requests and one using selenium. The html is passed to the parser.
+    - ```Parser.get_items(name: str, html: str)``` method is where youll have to experiment and set up your custom scraping. It takes the raw HTML and outputs a list of Item objects (see item.py) that contain all the data about the product. If the list is empty, the Scrape object will attempt to request the website and parse again untill reaching the maximum tries set in the ```config.py``` file.
+    - ```Scrape``` objects and subclasses control the loop. No customization was needed to get my scrapes working but I included subclasses as an example of how they can be customised.
 
 - **Notifications**: In Discord, navigate to a channel you own, click the gear icon to "Edit channel" and select "Integrations" then "Webhooks". Make a new webhook, name it, add an icon if you like and then "Copy webhook URL" and paste it into config.py WEBHOOK_URL. Optionally you can use environment variables as I have in the config file.
+
 ## Acknowledgements
 - The awesome Python community
 
