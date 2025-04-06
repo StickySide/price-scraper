@@ -44,7 +44,7 @@ class Scrape:
         min_retry_time: int,
         max_retry_time: int,
         max_tries: int,
-        discord_log: bool
+        discord_log: bool,
     ):
 
         self.name = name
@@ -77,7 +77,8 @@ class Scrape:
             f"self.min_retry_time={self.min_retry_time!r},"
             f"self.max_retry_time={self.min_retry_time!r},"
             f"self.max_tries={self.max_tries!r},"
-            f"self.discord_log={self.discord_log!r})")
+            f"self.discord_log={self.discord_log!r})"
+        )
 
     def __str__(self):
         return f"[{self.name}] scrape"
@@ -97,23 +98,17 @@ class Scrape:
 
         # Request page with retries
         for tries in range(self.max_tries):
-            self.html = self.requester.get_html(
-                        name=self.name,
-                        url=self.url
-                        )
+            self.html = self.requester.get_html(name=self.name, url=self.url)
 
             # Try to parse html into items
-            self.items = self.parser.get_items(
-                name=self.name,
-                html=self.html
-            )
+            self.items = self.parser.get_items(name=self.name, html=self.html)
 
             # If items were returned, scrape was successfull
             if self.items:
                 logger.info(
                     f"[{self.name}] Scrape attempt: "
                     f"{tries + 1}/{self.max_tries} successful!"
-                    )
+                )
                 # Parse items to dict for pandas to save
                 dict_list = self.items_to_dict(self.name, self.items)
 
@@ -130,19 +125,21 @@ class Scrape:
                     f"[{self.name}] Scrape attempt: "
                     f"{tries + 1}/{self.max_tries}, no items scraped, "
                     f"retry in {wait_time} seconds..."
-                    )
+                )
                 sleep(wait_time)
 
         # Loop exits if scrape failed from max attemps
-        logger.warning(f"[{self.name}] Scrape Failed, {self.max_tries} "
-                       f"attemps reached...")
+        logger.warning(
+            f"[{self.name}] Scrape Failed, {self.max_tries} " f"attemps reached..."
+        )
 
         # Stop logging and timing
         self.running = False
         self.end_time = dt.datetime.now()
         self.time_delta = self.end_time - self.start_time
-        logger.info(f"[{self.name}] scrape finished in "
-                    f"{self.time_delta.seconds} seconds")
+        logger.info(
+            f"[{self.name}] scrape finished in " f"{self.time_delta.seconds} seconds"
+        )
 
     def items_to_dict(self, name, items: list[Item]) -> list[dict]:
         """
@@ -151,8 +148,7 @@ class Scrape:
         if items:
             return [item.as_dict() for item in items]
         else:
-            logger.error(
-                f"[{name}] no items in item_list to parse to dict.")
+            logger.error(f"[{name}] no items in item_list to parse to dict.")
             return []
 
 
@@ -161,30 +157,34 @@ class StandardScrape(Scrape):
     Scrape Subclass specific to standard scrapes.
     Base class works so this is just a place holder.
     """
-    def __init__(self,
-                 name: str,
-                 notifier: Notifier,
-                 requester: Requester,
-                 parser: Parser,
-                 alerter: Alerter,
-                 data_manager: DataManager,
-                 url: str,
-                 min_retry_time: int,
-                 max_retry_time: int,
-                 max_tries: int,
-                 discord_log: bool
-                 ):
-        super().__init__(name,
-                         notifier,
-                         requester,
-                         parser,
-                         alerter,
-                         data_manager,
-                         url,
-                         min_retry_time,
-                         max_retry_time,
-                         max_tries,
-                         discord_log)
+
+    def __init__(
+        self,
+        name: str,
+        notifier: Notifier,
+        requester: Requester,
+        parser: Parser,
+        alerter: Alerter,
+        data_manager: DataManager,
+        url: str,
+        min_retry_time: int,
+        max_retry_time: int,
+        max_tries: int,
+        discord_log: bool,
+    ):
+        super().__init__(
+            name,
+            notifier,
+            requester,
+            parser,
+            alerter,
+            data_manager,
+            url,
+            min_retry_time,
+            max_retry_time,
+            max_tries,
+            discord_log,
+        )
 
     def __repr__(self):
         return (
@@ -199,7 +199,8 @@ class StandardScrape(Scrape):
             f"self.min_retry_time={self.min_retry_time!r},"
             f"self.max_retry_time={self.min_retry_time!r},"
             f"self.max_tries={self.max_tries!r},"
-            f"self.discord_log={self.discord_log!r})")
+            f"self.discord_log={self.discord_log!r})"
+        )
 
 
 class SeleniumScrape(Scrape):
@@ -207,34 +208,38 @@ class SeleniumScrape(Scrape):
     Scrape Subclass specific to selenium.
     Base class works so this is just a place holder.
     """
-    def __init__(self,
-                 name: str,
-                 notifier: Notifier,
-                 requester: Requester,
-                 parser: Parser,
-                 alerter: Alerter,
-                 data_manager: DataManager,
-                 url: str,
-                 min_retry_time: int,
-                 max_retry_time: int,
-                 max_tries: int,
-                 discord_log: bool
-                 ):
-        super().__init__(name,
-                         notifier,
-                         requester,
-                         parser,
-                         alerter,
-                         data_manager,
-                         url,
-                         min_retry_time,
-                         max_retry_time,
-                         max_tries,
-                         discord_log)
+
+    def __init__(
+        self,
+        name: str,
+        notifier: Notifier,
+        requester: Requester,
+        parser: Parser,
+        alerter: Alerter,
+        data_manager: DataManager,
+        url: str,
+        min_retry_time: int,
+        max_retry_time: int,
+        max_tries: int,
+        discord_log: bool,
+    ):
+        super().__init__(
+            name,
+            notifier,
+            requester,
+            parser,
+            alerter,
+            data_manager,
+            url,
+            min_retry_time,
+            max_retry_time,
+            max_tries,
+            discord_log,
+        )
 
     def __repr__(self):
         return (
-            f"BestBuyScrape("
+            f"SeleniumScrape("
             f"name={self.name!r},"
             f"notifier={self.notifier!r},"
             f"requester={self.requester!r},"
@@ -245,14 +250,13 @@ class SeleniumScrape(Scrape):
             f"self.min_retry_time={self.min_retry_time!r},"
             f"self.max_retry_time={self.min_retry_time!r},"
             f"self.max_tries={self.max_tries!r},"
-            f"self.discord_log={self.discord_log!r})")
+            f"self.discord_log={self.discord_log!r})"
+        )
 
 
 class Scrapers:
     """
     Scraper lookup table
     """
-    lookup = {
-        "standard": StandardScrape,
-        "selenium": SeleniumScrape
-    }
+
+    lookup = {"standard": StandardScrape, "selenium": SeleniumScrape}
